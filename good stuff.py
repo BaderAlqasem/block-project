@@ -85,7 +85,7 @@ def button():
         pygame.display.update()
 
 def eatBlocks():
-    name = input("enter your name")
+    name = input("Enter your name: ")
 
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
