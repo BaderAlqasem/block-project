@@ -2,12 +2,25 @@ import pygame
 import random
 import sys
 
-score = 0
+pygame.init()
 
+# class for all blocks in the game
+class Block(pygame.sprite.Sprite):
+
+    def __init__(self, color, width, height):
+
+        # Call the parent class (Sprite) constructor
+        super().__init__()
+
+        # Create an image of the block, and fill it with a color.
+        # This could also be an image loaded from the disk.
+        self.image = pygame.Surface([width, height])
+        self.image.fill(color)
+
+        self.rect = self.image.get_rect()
 
 def button():
-    pygame.init()
-    
+
     # screen dimensions
     screen_width = 1000
     screen_height = 600
@@ -23,13 +36,10 @@ def button():
     screen.blit(text, [400, 30])
     pygame.display.flip()
 
-    # screen into a variable
     widthQuit = 850
     widthAvoid = 850
     widthEat= 850
     
-    # stores the heightQuit of the
-    # screen into a variable
     heightQuit = 1100
     heightAvoid = 900
     heightEat = 700
@@ -40,11 +50,6 @@ def button():
     avoidBtn = smallfont.render("Avoid" , True , WHITE)
     eatBtn = smallfont.render("Eat" , True , WHITE)
     
-
-
-
-
-
     while True:
 
         for event in pygame.event.get():
@@ -85,13 +90,14 @@ def button():
         pygame.display.update()
 
 def eatBlocks():
-    name = input("Enter your name: ")
+    pygame.init()
 
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
     RED = (255, 0, 0)
     YELLOW = (255, 255, 0)
 
+    #Local Variables
     # starting coordinates of player block
     x1 = 0
     y1 = 0
@@ -101,31 +107,15 @@ def eatBlocks():
     y1_change = 0
 
     score = 0
-
-
-    # class for all blocks in the game
-    class Block(pygame.sprite.Sprite):
-    
-        def __init__(self, color, width, height):
-        
-            # Call the parent class (Sprite) constructor
-            super().__init__()
-
-            # Create an image of the block, and fill it with a color.
-            # This could also be an image loaded from the disk.
-            self.image = pygame.Surface([width, height])
-            self.image.fill(color)
-
-            self.rect = self.image.get_rect()
-
-    pygame.init()
+    loop = True
 
     screen_width = 1000
     screen_height = 600
     screen = pygame.display.set_mode([screen_width, screen_height])
 
-    block_list = pygame.sprite.Group()
+    clock = pygame.time.Clock()
 
+    block_list = pygame.sprite.Group()
     all_sprites_list = pygame.sprite.Group()
 
     for i in range(50):
@@ -140,13 +130,9 @@ def eatBlocks():
         block_list.add(food)
         all_sprites_list.add(food)
 
-    # green player 
     player = Block(RED, 20, 20)
     all_sprites_list.add(player)
-    # Loop until the user clicks the close button.
-    loop = True
-    # Used to manage how fast the screen updates
-    clock = pygame.time.Clock()
+
     # -------- Main Program Loop -----------
     while loop:
         for event in pygame.event.get(): 
@@ -179,7 +165,6 @@ def eatBlocks():
                     y1_change = 5
                     x1_change = 0
     
-
         # Positioning of player block updates after key is pressed
         x1 += x1_change
         y1 += y1_change
@@ -201,36 +186,11 @@ def eatBlocks():
             score +=1
             print(score)
 
-    #High Score Stuff
-    file = open("highscore.txt", "a")
-    file.write(str(score) + ", " + name + "\n")
-    file.close()
-
-    file = open("highscore.txt", "r")
-    readthefile = file.readlines()
-    sortedData = sorted(readthefile, reverse = True)
-
-    print("Top 3 Scores!")
-    print("Pos\tPoints , Name")
-
-    for line in range(3):
-        print(str(line + 1) + "\t" + str(sortedData[line]))
-
-    # if score < 10:
-    #     score = str(score)
-    #     score = score.zfill(2)
-    # else:
-    #     pass
-
         
         # Check for win
         if score == 50:
             print("You won!")
             loop = False
-
-            
-
-
 
         # Draw all the spites
         all_sprites_list.draw(screen)
@@ -247,6 +207,8 @@ def eatBlocks():
     pygame.quit()
     
 def avoidBlocks():
+    pygame.init()
+
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
     RED = (255, 0, 0)
@@ -257,62 +219,27 @@ def avoidBlocks():
     # starting coordinates of player block
     x1 = 0
     y1 = 0
+
     blockDimensionX = 20
     blockDimensionY = 20
+
+    screen_width = 1000
+    screen_height = 600
+    screen = pygame.display.set_mode([screen_width, screen_height])
 
     # Hold updating values of x and y values
     x1_change = 0       
     y1_change = 0
 
-    # Variables
     score = 0
-
-
-
-    # name = input("enter your name")
-    # file = open("highscore.txt", "a")
-    # file.write(str(score) + "," + name + "\n")
-    # file.close()
-
-
-
-
-    # class for all blocks in the game
-    class Block(pygame.sprite.Sprite):
-
-        def __init__(self, WHITE, width, height):
-
-            # Call the parent class (Sprite) constructor
-            super().__init__()
-
-            # Create an image of the block, and fill it with a WHITE.
-            # This could also be an image loaded from the disk.
-            self.image = pygame.Surface([width, height])
-            self.image.fill(WHITE)
-
-            # Fetch the rectangle object that has the dimensions of the image
-            # image.
-            # Update the position of this object by setting the values
-            # of rect.x and rect.y
-            self.rect = self.image.get_rect()
-
-    # Initialize Pygame
-    pygame.init()
-
-    screen_width = 1000
-    screen_height = 600
-
-    screen = pygame.display.set_mode([screen_width, screen_height])
+    loop = True
 
     block_list_avoid = pygame.sprite.Group()
     block_list_collectcoin = pygame.sprite.Group()
-
     all_sprites_list = pygame.sprite.Group()
 
     player = Block(RED, blockDimensionX, blockDimensionY)
     all_sprites_list.add(player)
-
-    loop = True
 
     clock = pygame.time.Clock()
 
@@ -404,20 +331,6 @@ def avoidBlocks():
         # Add the block to the list of objects
         block_list_collectcoin.add(coin)
         all_sprites_list.add(coin)
-
-    name = input("What is your name? ")
-    file = open("highscore.txt", "a")
-    file.write(str(score) + "," + name + "\n")
-    file.close()
-
-    file = open("highscore.txt", "r")
-    readthefile = file.readlines()
-    sortedData = sorted(readthefile, reverse = True)
-
-    print("Top 3 Scores!")
-    print("Prs\tPoints , Name")
-    for line in range(3):
-        print(str(line + 1) + "\t" + str(sortedData[line]))
 
         # Check the list of collisions
 
