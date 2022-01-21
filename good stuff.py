@@ -4,16 +4,11 @@ import sys
 
 pygame.init()
 
-# class for all blocks in the game
 class Block(pygame.sprite.Sprite):
-
     def __init__(self, color, width, height):
 
-        # Call the parent class (Sprite) constructor
         super().__init__()
 
-        # Create an image of the block, and fill it with a color.
-        # This could also be an image loaded from the disk.
         self.image = pygame.Surface([width, height])
         self.image.fill(color)
 
@@ -57,11 +52,8 @@ def button():
             if event.type == pygame.QUIT:
                 pygame.quit()
 
-            #checks if a mouse is clicked
             if event.type == pygame.MOUSEBUTTONDOWN:
 
-                #if the mouse is clicked on the
-                # button the game is terminated
                 if widthQuit/2 <= mouse[0] <= widthQuit/2+140 and heightQuit/2 <= mouse[1] <= heightQuit/2+40:
                     pygame.quit()
                 if widthAvoid/2 <= mouse[0] <= widthAvoid/2+140 and heightAvoid/2 <= mouse[1] <= heightAvoid/2+40:
@@ -79,7 +71,7 @@ def button():
         pygame.draw.rect(screen,GREY,[widthAvoid/2,heightAvoid/2,140,40])
         pygame.draw.rect(screen,GREY,[widthEat/2,heightEat/2,140,40])
     
-        # placing the quitBtn onto button
+        # Adding names onto button
         screen.blit(quitBtn , (widthQuit/2+50,heightQuit/2))
         screen.blit(avoidBtn , (widthAvoid/2+50,heightAvoid/2))
         screen.blit(eatBtn , (widthEat/2+50,heightEat/2))  
@@ -164,7 +156,7 @@ def eatBlocks():
                 elif event.key == pygame.K_s:
                     y1_change = 5
                     x1_change = 0
-    
+
         # Positioning of player block updates after key is pressed
         x1 += x1_change
         y1 += y1_change
@@ -173,8 +165,10 @@ def eatBlocks():
         if x1 >= screen_width or x1 < 0 or y1 >= screen_height or y1 < 0:
             loop = False
             print ("Game over")
+
         # Clear the screen
         screen.fill(BLACK)
+
         # player block positioning which updates after x1, y1 change is applied
         player.rect.x = x1
         player.rect.y = y1
@@ -186,7 +180,6 @@ def eatBlocks():
             score +=1
             print(score)
 
-        
         # Check for win
         if score == 50:
             print("You won!")
@@ -203,7 +196,6 @@ def eatBlocks():
         pygame.display.flip()
         # 60 FPS
         clock.tick(60)
-    print("quit")
     pygame.quit()
     
 def avoidBlocks():
@@ -336,9 +328,6 @@ def avoidBlocks():
 
         for block in blocks_hit_list_avoid:
             print("Game Over")
-            print("Top 3 Scores!")
-            print("Prs\tPoints , Name")
-            # print(d)
             pygame.quit() 
 
         # Check for win
